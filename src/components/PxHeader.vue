@@ -22,7 +22,7 @@
 import PxIcon from "@/components/PxIcon";
 
 export default {
-  name:'PxHeader',
+  name: "PxHeader",
   components: { PxIcon }
-}
+};
 </script>
