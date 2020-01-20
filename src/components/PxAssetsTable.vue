@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: "PxAssetsTable",
+  name: 'PxAssetsTable',
 
   props: {
     assets: {
@@ -39,7 +39,7 @@ export default {
       default: () => []
     }
   }
-};
+}
 </script>
 
 <style scoped>

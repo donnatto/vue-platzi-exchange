@@ -8,22 +8,22 @@ import Error from '@/views/Error'
 Vue.use(Router)
 
 export default new Router({
-  mode: "history",
+  mode: 'history',
 
   routes: [
     {
-      path: "/",
-      name: "home",
+      path: '/',
+      name: 'home',
       component: Home
     },
     {
-      path: "/about",
-      name: "about",
+      path: '/about',
+      name: 'about',
       component: About
     },
     {
-      path: "*",
-      name: "error",
+      path: '*',
+      name: 'error',
       component: Error
     }
   ]
