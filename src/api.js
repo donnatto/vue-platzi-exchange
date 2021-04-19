@@ -12,14 +12,14 @@ function getAsset(coin) {
     .then(res => res.data)
 }
 
-function getAssetHistory(coin) {
+function getAssetHistory(coin, interval, time) {
   const now = new Date()
   const end = now.getTime()
-  now.setDate(now.getDate() - 1)
+  now.setDate(now.getDate() - time)
   const start = now.getTime()
 
   return fetch(
-    `${url}/assets/${coin}/history?interval=h1&start=${start}&end=${end}`
+    `${url}/assets/${coin}/history?interval=${interval}&start=${start}&end=${end}`
   )
     .then(res => res.json())
     .then(res => res.data)

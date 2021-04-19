@@ -56,7 +56,7 @@
         <div class="my-10 sm:mt-0 flex flex-col justify-center text-center">
           <button
             @click="toggleConverter"
-            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            class="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
           >
             {{ fromUsd ? `USD a ${asset.symbol}` : `${asset.symbol} a USD` }}
           </button>
@@ -79,9 +79,33 @@
         </div>
       </div>
 
+      <div class="flex lg:flex-row justify-around items-center">
+        <div
+          class="my-1 sm:mt-0 flex flex-col lg:w-1/4 justify-center text-center"
+        >
+          <px-button @custom-click="getDailyHistory">
+            <slot>24 HRS</slot>
+          </px-button>
+        </div>
+        <div
+          class="my-1 sm:mt-0 flex flex-col lg:w-1/4 justify-center text-center"
+        >
+          <px-button @custom-click="getWeeklyHistory">
+            SEMANA
+          </px-button>
+        </div>
+        <div
+          class="my-1 sm:mt-0 flex flex-col lg:w-1/4 justify-center text-center"
+        >
+          <px-button @custom-click="getMonthlyHistory">
+            MES
+          </px-button>
+        </div>
+      </div>
+
       <line-chart
         class="my-10"
-        :colors="['orange']"
+        :colors="['lightgreen']"
         :min="min"
         :max="max"
         :data="history.map(h => [h.date, parseFloat(h.priceUsd).toFixed(2)])"
@@ -205,13 +229,43 @@ export default {
 
       Promise.all([
         api.getAsset(id),
-        api.getAssetHistory(id),
+        api.getAssetHistory(id, 'h1', 1),
         api.getMarkets(id)
       ])
         .then(([asset, history, markets]) => {
           this.asset = asset
           this.history = history
           this.markets = markets
+        })
+        .finally(() => (this.isLoading = false))
+    },
+    getDailyHistory() {
+      const id = this.$route.params.id
+      this.isLoading = true
+
+      Promise.resolve(api.getAssetHistory(id, 'h1', 1))
+        .then(history => {
+          this.history = history
+        })
+        .finally(() => (this.isLoading = false))
+    },
+    getWeeklyHistory() {
+      const id = this.$route.params.id
+      this.isLoading = true
+
+      Promise.resolve(api.getAssetHistory(id, 'h6', 7))
+        .then(history => {
+          this.history = history
+        })
+        .finally(() => (this.isLoading = false))
+    },
+    getMonthlyHistory() {
+      const id = this.$route.params.id
+      this.isLoading = true
+
+      Promise.resolve(api.getAssetHistory(id, 'd1', 30))
+        .then(history => {
+          this.history = history
         })
         .finally(() => (this.isLoading = false))
     }
